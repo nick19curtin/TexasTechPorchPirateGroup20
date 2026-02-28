@@ -1,4 +1,4 @@
-#Porch Pirate Project - Group 20 TTU
+# Porch Pirate Project - Group 20 TTU
 TTU Microcontroller Project Lab 2026 - Group 20
 
 Project Authors:
