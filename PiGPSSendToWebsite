@@ -1,0 +1,129 @@
+#!/usr/bin/python3
+# -*- coding:utf-8 -*-
+
+import json
+import os
+import time
+import urllib.request
+import urllib.error
+import serial
+import RPi.GPIO as GPIO
+
+SERIAL_PORT = "/dev/ttyUSB2"
+BAUD = 115200
+POWER_KEY = 6
+
+API_URL = os.environ.get(
+    "PORCH_API_URL",
+    "https://porchpirate-api-bgbbhgdpargxgsby.eastus-01.azurewebsites.net/api/update",
+)
+DEVICE_ID = os.environ.get("DEVICE_ID", "pi-1")
+UPDATE_KEY = os.environ.get("UPDATE_KEY", "")  # optional
+BATTERY_PCT = int(os.environ.get("BATTERY_PCT", "100"))
+SEND_INTERVAL_S = float(os.environ.get("SEND_INTERVAL_S", "5"))
+
+ser = serial.Serial(SERIAL_PORT, BAUD, timeout=1)
+ser.flushInput()
+
+
+def send_at(command, expect, timeout=1.0):
+    ser.write((command + "\r\n").encode())
+    time.sleep(timeout)
+    raw = b""
+    if ser.in_waiting:
+        time.sleep(0.05)
+        raw = ser.read(ser.in_waiting)
+    text = raw.decode(errors="ignore")
+    if expect and expect not in text:
+        return False, text
+    return True, text
+
+
+def nmea_to_decimal(raw_val, hemi):
+    # raw_val examples: lat=3358.1234, lon=10152.1234
+    val = float(raw_val)
+    degrees = int(val // 100)
+    minutes = val - (degrees * 100)
+    dec = degrees + (minutes / 60.0)
+    if hemi in ("S", "W"):
+        dec = -dec
+    return dec
+
+
+def parse_cgpsinfo(response_text):
+    # Expected: +CGPSINFO: <lat>,<N/S>,<lon>,<E/W>,<date>,<utc>,<alt>,<speed>
+    for line in response_text.splitlines():
+        if "+CGPSINFO:" in line:
+            payload = line.split(":", 1)[1].strip()
+            parts = [p.strip() for p in payload.split(",")]
+            if len(parts) < 4:
+                return None
+            lat_raw, ns, lon_raw, ew = parts[0], parts[1], parts[2], parts[3]
+            if not lat_raw or not lon_raw or not ns or not ew:
+                return None
+            lat = nmea_to_decimal(lat_raw, ns)
+            lon = nmea_to_decimal(lon_raw, ew)
+            return lat, lon
+    return None
+
+
+def get_gps_fix():
+    ok, _ = send_at("AT+CGPS=1,1", "OK", 1)
+    if not ok:
+        return None
+    ok, resp = send_at("AT+CGPSINFO", "+CGPSINFO:", 1)
+    if not ok:
+        return None
+    return parse_cgpsinfo(resp)
+
+
+def post_update(lat, lon, battery_pct):
+    payload = {
+        "deviceId": DEVICE_ID,
+        "lat": lat,
+        "lon": lon,
+        "battery_pct": battery_pct,
+        "ts": int(time.time()),
+    }
+    data = json.dumps(payload).encode("utf-8")
+    headers = {"Content-Type": "application/json"}
+    if UPDATE_KEY:
+        headers["x-update-key"] = UPDATE_KEY
+
+    req = urllib.request.Request(API_URL, data=data, headers=headers, method="POST")
+    with urllib.request.urlopen(req, timeout=10) as resp:
+        return resp.read().decode("utf-8")
+
+
+def power_on():
+    print("SIM7600X starting...")
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setwarnings(False)
+    GPIO.setup(POWER_KEY, GPIO.OUT)
+    time.sleep(0.1)
+    GPIO.output(POWER_KEY, GPIO.HIGH)
+    time.sleep(2)
+    GPIO.output(POWER_KEY, GPIO.LOW)
+    time.sleep(20)
+    ser.flushInput()
+    print("SIM7600X ready")
+
+
+def main():
+    power_on()
+    while True:
+        fix = get_gps_fix()
+        if fix is None:
+            print("No GPS fix yet...")
+        else:
+            lat, lon = fix
+            try:
+                res = post_update(lat, lon, BATTERY_PCT)
+                print(f"Sent: lat={lat:.6f}, lon={lon:.6f} -> {res}")
+            except Exception as e:
+                print(f"POST failed: {e}")
+        time.sleep(SEND_INTERVAL_S)
+
+
+if __name__ == "__main__":
+    main()
