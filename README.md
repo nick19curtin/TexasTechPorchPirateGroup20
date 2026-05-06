@@ -10,8 +10,8 @@
 
 | Name | Role |
 |------|------|
-| Nick Curtin | Software / Firmware |
-| Mark Barrera | Hardware / Integration |
+| Nick Curtin | Software / Firmware / Modeling|
+| Mark Barrera | Hardware / Integration / Modeling |
 | Nigel Howard | Hardware / Integration |
 
 **Web App:** [PorchPirateProjectWebApp](https://github.com/nick19curtin/PorchPirateProjectWebApp)  
