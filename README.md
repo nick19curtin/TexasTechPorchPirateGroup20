@@ -36,22 +36,45 @@
 
 ## Hardware Bill of Materials
 
-| # | Component | Purpose | Est. Price |
-|---|-----------|---------|-----------|
-| 1 | [Raspberry Pi 4 Model B (4 GB)](https://www.raspberrypi.com/products/raspberry-pi-4-model-b/) | Main compute unit running Python firmware | ~$55 |
-| 2 | [Raspberry Pi Camera Module 3](https://www.raspberrypi.com/products/camera-module-3/) × 2 | Front and rear 12 MP cameras (1280×720 capture) | ~$25 each |
-| 3 | [Adafruit LIS3DH Triple-Axis Accelerometer](https://www.adafruit.com/product/2809) | Pickup / motion detection over I²C | ~$5 |
-| 4 | Waveshare UPS HAT (I²C, addr 0x2D) | Li-ion battery management — voltage, current, %, runtime | ~$25 |
-| 5 | SIM7600G-H 4G LTE HAT | GPS fix via AT+CGPSINFO; USB serial at 115200 baud | ~$65 |
-| 6 | SIM Card (data plan) | Live upload to Azure; GPS-assisted lock | ~$10/mo |
-| 7 | 18650 Li-ion Battery Pack (3.7 V, 4000–6000 mAh) | Powers device via UPS HAT | ~$15 |
-| 8 | MicroSD Card (32 GB, Class 10) | OS and firmware storage | ~$8 |
-| 9 | Dual CSI Camera Cable Set | Connects both cameras to Pi 4 CSI ports | ~$6 |
-| 10 | Enclosure / Decoy Box | Hides hardware inside a package-shaped container | ~$10 |
+| # | Component | Qty | Unit Cost | Item Total | Source |
+|---|-----------|:---:|----------:|----------:|--------|
+| 1 | Waveshare UPS HAT (E) | 1 | $45.00 | $45.00 | Stockroom |
+| 2 | 21700 5000mAh Batteries | 4 | $6.00 | $24.00 | Stockroom |
+| 3 | SIM 7600NA-H 4G HAT | 1 | $90.00 | $90.00 | Personal |
+| 4 | EIOT Club Prepaid SIM Plan | 1 | $20.00 | $20.00 | Personal |
+| 5 | Raspberry Pi Cameras | 1 | $40.00 | $40.00 | Stockroom |
+| 6 | Limit Switch | 2 | $1.02 | $2.04 | Stockroom |
+| 7 | Potentiometer | 2 | $2.06 | $4.12 | Stockroom |
+| 8 | Accelerometer (LIS3DH) | 1 | $4.95 | $4.95 | Stockroom |
+| 9 | 1W LEDs | 1 | $7.69 | $7.69 | Stockroom |
+| 10 | LED Driver | 1 | $8.98 | $8.98 | Stockroom |
+| 11 | MOSFET (STP9NK50ZFP) | 2 | $2.80 | $5.60 | Stockroom |
+| 12 | Terminal Block | 1 | $0.96 | $0.96 | Personal |
+| 13 | 18650 3200mAh 10A Battery | 4 | $2.54 | $10.16 | Personal |
+| 14 | 3S 12V 10A BMS Board | 1 | $2.74 | $2.74 | Personal |
+| 15 | 1S 3.7V 4A BMS Board | 1 | $0.60 | $0.60 | Personal |
+| 16 | 18650 Battery Holders | 4 | $0.60 | $2.40 | Personal |
+| 17 | Accelerometer PCB (JLCPCB) | 1 | $4.62 | $4.62 | Personal |
+| 18 | CC/CV Charger Module | 1 | $9.99 | $9.99 | Stockroom |
+| 19 | Schottky Diode (SB530-E3/73) | 2 | $1.20 | $2.40 | Stockroom |
+| 20 | Timing PCB (JLCPCB) | 1 | $10.81 | $10.81 | Personal |
+| 21 | Servo Motor | 1 | $9.99 | $9.99 | Personal |
+| 22 | DC Motor (PAN14EE12AA1) | 1 | $5.14 | $5.14 | Stockroom |
+| 23 | 2kg of Filament (3D Print) | 1 | $25.49 | $25.49 | Stockroom |
+| 24 | Boxes | 1 | $15.99 | $15.99 | Stockroom |
+| 25 | Heat Thread Inserts | 1 | $9.98 | $9.98 | Stockroom |
+| 26 | Female to Female Headers | 1 | $3.99 | $3.99 | Stockroom |
+| 27 | 555 Timers (NE555P) | 2 | $0.59 | $1.18 | Stockroom |
+| 28 | 1000 RPM Motor | 1 | $14.99 | $14.99 | Stockroom |
+| 29 | 3000 RPM Motor | 1 | $15.99 | $15.99 | Stockroom |
+| 30 | Glitter | 2 | $14.95 | $29.90 | Stockroom |
+| 31 | Camera Extensions | 1 | $9.99 | $9.99 | Personal |
 
-**Estimated Total Hardware Cost: ~$249**
-
-> Prices are approximate retail at time of writing (2026). The SIM7600G-H and cameras are the primary cost drivers.
+| Category | Total |
+|----------|------:|
+| Stockroom | $277.42 |
+| Personal | $162.27 |
+| **Project Total** | **$439.69** |
 
 ---
 
