@@ -14,9 +14,9 @@ from picamera2 import Picamera2
 from smbus2 import SMBus
 
 # ========= CONFIG (env-overridable) =========
-UPLOAD_URL = os.environ.get("UPLOAD_URL", "https://porchpirate-api-bgbbhgdpargxgsby.eastus-01.azurewebsites.net")
-CAPTURE_CMD_URL = os.environ.get("CAPTURE_CMD_URL", "https://porchpirate-api-bgbbhgdpargxgsby.eastus-01.azurewebsites.net")
-CAPTURE_ACK_URL = os.environ.get("CAPTURE_ACK_URL", "https://porchpirate-api-bgbbhgdpargxgsby.eastus-01.azurewebsites.net")
+UPLOAD_URL = os.environ.get("UPLOAD_URL", "")
+CAPTURE_CMD_URL = os.environ.get("CAPTURE_CMD_URL", "")
+CAPTURE_ACK_URL = os.environ.get("CAPTURE_ACK_URL", "")
 DEVICE_ID = os.environ.get("DEVICE_ID", "pi-1")
 UPDATE_KEY = os.environ.get("UPDATE_KEY", "")
 
